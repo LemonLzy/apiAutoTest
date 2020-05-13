@@ -6,10 +6,9 @@ import requests
 
 class ApiLogin(object):
     def api_post_login(self, url, mobile, code):
-        headers = {"Content-Type": "app;ication/json"}
+        headers = {"Content-Type": "application/json"}
         data = {"mobile": mobile, "code": code}
-        post = requests.post(url, headers=headers, json=data)
-        return post
+        return requests.post(url, headers=headers, json=data)
 
 
 """

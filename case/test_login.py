@@ -4,23 +4,36 @@
 
 import unittest
 from api.api_login import ApiLogin
+from parameterized import parameterized
+from tools.read_json import ReadJson
+
+
+# 读取数据函数
+def get_data():
+    data = (ReadJson("login.json").read_json())
+    arr = [(data.get("url"),
+            data.get("mobile"),
+            data.get("code"),
+            data.get("expect_result"),
+            data.get("status_code"))]
+    return arr
 
 
 class TestLogin(unittest.TestCase):
-    def test_login(self):
-        url = "http://ttapi.research.itcast.cn/app/v1_0/authorizations"
-        mobile = "15717328898"
-        code = "150052"
+    @parameterized.expand(get_data())
+    def test_login(self, url, mobile, code, expect_result, status_code):
+        # url = "http://ttapi.research.itcast.cn/app/v1_0/authorizations"
+        # mobile = "15717328898"
+        # code = "150052"
 
         login = ApiLogin().api_post_login(url, mobile, code)
         print("查看响应结果：", login.json())
-        self.assertEqual("OK", login.json()['message'])
-        self.assertEqual(201, login.status_code)
+        self.assertEqual(expect_result, login.json()['message'])
+        self.assertEqual(status_code, login.status_code)
 
 
 if __name__ == '__main__':
     unittest.main()
-
 
 """
 获取验证码：http://ttapi.research.itcast.cn/app/v1_0/sms/codes/15717328898

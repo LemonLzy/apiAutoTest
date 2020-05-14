@@ -13,8 +13,10 @@ import json
 """
 问题：1、未经过封装，无法在其他模块内调用使用 
      2、数据存储文件有好几个，如果写死文件名，在读取别的文件时无法使用
+     3、预期格式为列表嵌套元祖[(url,mobile,code...)]，目前返回字典
 解决：1、封装
      2、使用参数替换静态写死的文件名
+     3、读取字典内容，并添加到新的列表中
 """
 
 
@@ -30,4 +32,11 @@ class ReadJson(object):
 
 
 if __name__ == '__main__':
-    print(ReadJson("login.json").read_json())
+    # print(ReadJson("login.json").read_json())
+    data = (ReadJson("login.json").read_json())
+    arr = [(data.get("url"),
+            data.get("mobile"),
+            data.get("code"),
+            data.get("expect_result"),
+            data.get("status_code"))]
+    print(arr)
